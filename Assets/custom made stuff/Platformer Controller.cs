@@ -6,6 +6,8 @@ public class PlatformerController : MonoBehaviour
     private Rigidbody2D rb;
     public float moveSpeed = 5.0f;
     public float jumpForce = 5.0f;
+    public float dashStrength = 15.0f;
+    public float groundPoundForce = 20.0f;
 
     float moveX;
     public bool isTouchingGround;
@@ -41,6 +43,18 @@ public class PlatformerController : MonoBehaviour
     void OnCollisionExit2D(Collision2D other) {
         if(other.gameObject.CompareTag("Ground")) {
             isTouchingGround = false;
+        }
+    }
+
+    // left and right arrow keys
+    private void OnDash(InputValue value) {
+        float moveInput = value.Get<float>();
+        moveX += moveInput * dashStrength;
+    }
+
+    private void OnGroundPound(InputValue value) {
+        if(!isTouchingGround) {
+            rb.AddForceY(-groundPoundForce, ForceMode2D.Impulse);
         }
     }
 }
